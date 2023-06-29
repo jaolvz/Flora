@@ -1,5 +1,11 @@
-import  random
+import random
 import os
+import webbrowser as wb
+from gtts import gTTS
+import pygame
+import speech_recognition as sr
+
+
 def desbloqueando_site(site_to_unblock):
     hosts_path = r"C:\Windows\System32\drivers\etc\hosts"
     with open(hosts_path, "r") as file:
@@ -9,7 +15,6 @@ def desbloqueando_site(site_to_unblock):
         file.writelines(new_content)
     print("O site foi desbloqueado com sucesso.")
     os.system("ipconfig /flushdns")
-
 
 def bloqueando_site(site_to_block):
     # Caminho do arquivo hosts (no Windows)
@@ -27,6 +32,21 @@ def bloqueando_site(site_to_block):
     # Limpa o cache DNS para que as alterações entrem em vigor
     os.system("ipconfig /flushdns")
 
+def abrir(app):
+    if "twitter" in app:
+        wb.open("https://www.twitter.com")
+    if "youtube" in app:
+        wb.open("https://www.youtube.com")
+    if "thm" in app:
+        wb.open("https://sm4rty.medium.com/free-350-tryhackme-rooms-f3b7b2954b8d")
+    if "google" in app:
+        wb.open("https://www.google.com")
+    if "chat gpt" in app:
+        wb.open("https://chat.openai.com/")
+    if "lol" in app:
+        os.startfile("C:\Riot Games\League of Legends\LeagueClient.exe")
+    if "virtualbox" in app:
+        os.startfile("C:\Program Files\Oracle\VirtualBox\VirtualBox.exe")
 
 def contar_piada():
     piadas = [
@@ -126,6 +146,32 @@ def contar_piada():
     piada = random.choice(piadas)
     return piada
 
+
+# FUNÇÕES DE RESPOSTA E INTERAÇÃO COM A ASSISTENTE
+
+def resposta_microfone():
+    microfone = sr.Recognizer()
+    with sr.Microphone() as source:
+        microfone.adjust_for_ambient_noise(source)
+        audio = microfone.listen(source)
+    try:
+        resposta = microfone.recognize_google(audio, language='pt-BR')
+        return resposta
+    except sr.UnknownValueError:
+        print("Não entendi")
+
+
+def falar(texto):
+    tts = gTTS(text=texto, lang='pt')
+    arquivo_saida = "saida.mp3"
+    tts.save(arquivo_saida)
+    pygame.init()
+    caminho_arquivo = r"C:\Users\Principal\PycharmProjects\Flora\saida.mp3"
+    pygame.mixer.music.load(caminho_arquivo)
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        continue
+    pygame.quit()
 
 
 

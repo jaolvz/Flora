@@ -4,28 +4,17 @@ import re
 import scripts
 import pyautogui
 import webbrowser as wb
-from gtts import gTTS
-import pygame
 from datetime import datetime
 import ctypes
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+import clima
 
 
-def falar(texto):
-    tts = gTTS(text=texto, lang='pt')
-    arquivo_saida = "saida.mp3"
-    tts.save(arquivo_saida)
-    pygame.init()
-    caminho_arquivo = r"C:\Users\Principal\PycharmProjects\Flora\saida.mp3"
-    pygame.mixer.music.load(caminho_arquivo)
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        continue
-    pygame.quit()
+
 def modoIzabella():
 
-    falar("Ativando modo Izabella")
+    scripts.falar("Ativando modo Izabella")
     # Minimize todas as janelas
     pyautogui.keyDown('winleft')
     pyautogui.press('d')
@@ -38,11 +27,11 @@ def modoIzabella():
     wb.open("https://www.youtube.com/watch?v=AENA_nvF-L0&ab_channel=pagodepontocom")
 
 def modoEstudo():
-   falar("Ativando modo estudo")
+   scripts.falar("Ativando modo estudo")
    scripts.bloqueando_site("twitter.com")
 
 def desativarModoEstudo():
-    falar("Desativando modo estudo")
+    scripts.falar("Desativando modo estudo")
     scripts.desbloqueando_site("twitter.com")
 
 def volumeDesejado(volume_desejado):
@@ -50,10 +39,10 @@ def volumeDesejado(volume_desejado):
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
     volume = ctypes.cast(interface, ctypes.POINTER(IAudioEndpointVolume))
     volume.SetMasterVolumeLevelScalar(volume_desejado, None)
-    falar(f"Volume alterado para {volume_desejado*100}%");
+    scripts.falar(f"Volume alterado para {volume_desejado*100}%");
 
 def tocar_musica(nome_musica):
-    falar(f"Tocando {nome_musica} no Youtube")
+    scripts.falar(f"Tocando {nome_musica} no Youtube")
     url_busca = f'https://www.youtube.com/results?search_query={nome_musica}'
     response = requests.get(url_busca)
     pattern = r'/watch\?v=([A-Za-z0-9_\-]+)'
@@ -67,6 +56,7 @@ def tocar_musica(nome_musica):
 
 def analise_frase(frase):
     frase= frase.lower()
+
     if "tocar" in frase:
         frase = frase.replace("tocar", "")
         tocar_musica(frase)
@@ -74,11 +64,11 @@ def analise_frase(frase):
     if "que horas são" in frase:
         hora_atual = datetime.now().hour
         minuto_atual = datetime.now().minute
-        falar(f"São exatamente {hora_atual} horas e {minuto_atual} minutos ")
+        scripts.falar(f"São exatamente {hora_atual} horas e {minuto_atual} minutos ")
 
     if "mudar volume" in frase:
-        falar("para quantos por cento ?")
-        novo_volume =  int(resposta_microfone())
+        scripts.falar("para quantos por cento ?")
+        novo_volume =  int(scripts.resposta_microfone())
         novo_volume = novo_volume/100
         volumeDesejado(novo_volume)
 
@@ -92,7 +82,17 @@ def analise_frase(frase):
         desativarModoEstudo()
 
     if "conte uma piada" in frase:
-        falar(scripts.contar_piada())
+        scripts.falar(scripts.contar_piada())
+
+    if "abrir" in frase:
+        scripts.abrir(frase)
+
+    if frase == "clima":
+        scripts.falar("De qual cidade?")
+        cidade = scripts.resposta_microfone()
+        print(cidade)
+        clima.obter_clima(cidade)
+
 
 
 def ouvir_microfone():
@@ -108,16 +108,6 @@ def ouvir_microfone():
        except sr.UnknownValueError:
         print("Não entendi")
 
-def resposta_microfone():
-    microfone = sr.Recognizer()
-    with sr.Microphone() as source:
-        microfone.adjust_for_ambient_noise(source)
-        audio = microfone.listen(source)
-    try:
-        resposta = microfone.recognize_google(audio, language='pt-BR')
-        return resposta
-    except sr.UnknownValueError:
-        print("Não entendi")
 
 
 ouvir_microfone()
