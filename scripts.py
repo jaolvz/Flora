@@ -5,7 +5,6 @@ from gtts import gTTS
 import pygame
 import speech_recognition as sr
 
-
 def desbloqueando_site(site_to_unblock):
     hosts_path = r"C:\Windows\System32\drivers\etc\hosts"
     with open(hosts_path, "r") as file:
@@ -16,19 +15,18 @@ def desbloqueando_site(site_to_unblock):
     print("O site foi desbloqueado com sucesso.")
     os.system("ipconfig /flushdns")
 
-def bloqueando_site(site_to_block):
+def bloqueando_site(site):
     # Caminho do arquivo hosts (no Windows)
-    hosts_path = r"C:\Windows\System32\drivers\etc\hosts"
+    caminho_hosts = r"C:\Windows\System32\drivers\etc\hosts"
     # Verifica se o site já está bloqueado no arquivo hosts
-    with open(hosts_path, "r") as file:
-        hosts_content = file.read()
-    if site_to_block in hosts_content:
-        print("O site já está bloqueado.")
+    with open(caminho_hosts, "r") as file:
+        hosts_conteudo = file.read()
+    if caminho_hosts in hosts_conteudo:
+        pass
     else:
         # Adiciona o site ao arquivo hosts para bloqueá-lo
-        with open(hosts_path, "a") as file:
-            file.write("\n127.0.0.1 " + site_to_block)
-        print("O site foi bloqueado com sucesso.")
+        with open(caminho_hosts, "a") as file:
+            file.write("\n127.0.0.1 " + site)
     # Limpa o cache DNS para que as alterações entrem em vigor
     os.system("ipconfig /flushdns")
 

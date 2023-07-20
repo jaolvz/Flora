@@ -90,10 +90,7 @@ def analise_frase(frase):
     if frase == "clima":
         scripts.falar("De qual cidade?")
         cidade = scripts.resposta_microfone()
-        print(cidade)
         clima.obter_clima(cidade)
-
-
 
 def ouvir_microfone():
    while True:
@@ -106,7 +103,7 @@ def ouvir_microfone():
            print(frase)
            analise_frase(frase)
        except sr.UnknownValueError:
-        print("Não entendi")
+        print("Nada dito")
 
 
 

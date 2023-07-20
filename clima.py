@@ -1,8 +1,6 @@
-# db2a9e7d63aef6a482eb4c106eb8e99c chave
 import requests
 import scripts
 from customtkinter import *
-
 
 api_key = "db2a9e7d63aef6a482eb4c106eb8e99c"
 
@@ -11,25 +9,21 @@ def obter_clima(cidade):
     response = requests.get(url)
     dados = response.json()
     if dados['cod']==200:
-        criar_janela(dados)
-        scripts.falar("Mostrar ou dizer?")
+        scripts.falar("Mostrar ou falar?")
         resposta = scripts.resposta_microfone()
         if resposta == "mostrar":
             criar_janela(dados)
-        elif resposta == "dizer":
+        elif resposta == "falar":
             scripts.falar(
                 f"A temperatura na cidade de {dados['name']} é de {round(dados['main']['temp'])} graus celsius com um clima {dados['weather'][0]['description']}")
     else:
         scripts.falar("Não consegui encontrar a cidade")
 def criar_janela(dados):
-
-
     janela = CTk()
     janela.resizable(False, False)
     janela.title(dados['name'])
     janela.geometry("300x300")
     janela.iconbitmap(r"C:\Users\Principal\PycharmProjects\Flora\fotos\icone.ico")
-
 
 
 
