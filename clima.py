@@ -3,6 +3,7 @@ import scripts
 from customtkinter import *
 
 api_key = "db2a9e7d63aef6a482eb4c106eb8e99c"
+# api key de conta feita somente para testes.
 
 def obter_clima(cidade):
     url = f"http://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={api_key}&units=metric&lang=pt"
