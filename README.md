@@ -5,7 +5,7 @@ Flora tem como objetivo automatizar algumas funções do computador e de quebra 
 
 Explicando os Modos 
 
-Modo Izabella é uma brincadeira para minha então namorda, Izabella, esse modo minimiza todas as telas e toca uma linda música do rei da Voz Péricles. O modo
+Modo Izabella é uma brincadeira para minha então namorada, Izabella, esse modo minimiza todas as telas e toca uma linda música do rei da Voz Péricles. O modo
 só é ativado quando Izabella aparece na câmera do computador com a Flora em execução. (Eu sou o ÚLTIMO dos romanticos 😘
 
 
